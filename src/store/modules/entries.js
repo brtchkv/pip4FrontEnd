@@ -44,6 +44,12 @@ const actions = {
                     r: res.data.r,
                     result: res.data.result
                 };
+                if (entry.result) {
+                    toast.success("Correct!");
+                } else {
+                    toast.error("Wrong!");
+                }
+
                 context.commit("ADD_ENTRY", entry);
             })
             .catch(err => {
