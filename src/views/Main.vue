@@ -1,16 +1,50 @@
 <template>
     <div class="main">
-        <b-row class="row justify-content-center">
-            <div>
-                <b-nav small>
-                    <b-nav-item @click="showHistory = !showHistory"
-                                :class="[{ active: showHistory}]"
-                    >History
-                    </b-nav-item>
-                    <b-nav-item @click="logout">Log Out</b-nav-item>
-                </b-nav>
-            </div>
-        </b-row>
+        <!--        <b-row class="row">-->
+        <!--            <div>-->
+        <!--                <b-navbar small>-->
+        <!--                    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
+        <!--                    <b-collapse id="nav-collapse" is-nav>-->
+        <!--                    <b-navbar-nav>-->
+        <!--                    <b-nav-item disabled>{{$store.getters.USERNAME}}</b-nav-item>-->
+        <!--                    <b-nav-item @click="showHistory = !showHistory"-->
+        <!--                                :class="[{ active: showHistory}]"-->
+        <!--                    >History-->
+        <!--                    </b-nav-item>-->
+        <!--                        </b-navbar-nav>-->
+        <!--                    <b-navbar-nav>-->
+        <!--                    <b-nav-item @click="logout" class="navbar-right" right>Log Out</b-nav-item>-->
+        <!--                        </b-navbar-nav>-->
+        <!--                    </b-collapse>-->
+        <!--                </b-navbar>-->
+        <!--            </div>-->
+        <!--        </b-row>-->
+        <b-navbar class="text-center justify-content-center">
+
+            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+            <b-collapse id="nav-collapse" is-nav>
+                <b-navbar-nav>
+                    <b-nav-item disabled>{{$store.getters.USERNAME}}</b-nav-item>
+                </b-navbar-nav>
+
+                <b-navbar-nav class="ml-auto">
+                    <b-navbar-nav center>
+                        <b-nav-item @click="showHistory = !showHistory"
+                                    :class="[{ active: showHistory}]">Table
+                        </b-nav-item>
+                    </b-navbar-nav>
+                </b-navbar-nav>
+
+                <!-- Right aligned nav items -->
+                <b-navbar-nav class="ml-auto" style="color: red;">
+                    <b-navbar-nav right>
+                        <b-nav-item @click="logout" style="color: red;"><span class="text-danger">Exit</span>
+                        </b-nav-item>
+                    </b-navbar-nav>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
         <div class="row">
             <!--            <CoordPlane id="coords" :entries="entries" @addentry="addEntry" class="justify-content-center"-->
             <!--                        style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"/>-->

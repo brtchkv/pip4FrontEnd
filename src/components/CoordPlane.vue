@@ -46,20 +46,20 @@
 
             <!-- circle -->
             <clipPath id="clip-circle">
-                <polygon points="-125 -125 0 -125 0 0 -125 0"/>
+                <polygon points="0 125 -125 0 0 0 0 0"/>
             </clipPath>
 
             <circle
                     cx="0"
                     cy="0"
-                    :r="radius"
+                    :r="radius/2"
                     fill="#2a95ec"
                     clip-path="url(#clip-circle)"
             />
             <!-- rectangle -->
-            <rect x="0" y="0" :width="radius" :height="radius / 2" fill="#2a95ec"/>
+            <rect :x="-radius/2" :y="-radius" :width="radius/2" :height="radius" fill="#2a95ec"/>
             <!-- triangle -->
-            <polygon :points="-radius / 2 + ' 0 0 0 0 ' + radius" fill="#2a95ec"/>
+            <polygon :points="radius/2 + ' 0 0 0 0 ' + -radius/2" fill="#2a95ec"/>
             <!-- dots -->
             <dot
                     v-for="entry in entries"
