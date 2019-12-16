@@ -18,9 +18,6 @@ const mutations = {
     SET_ENTRIES: (state, payload) => {
         state.entries = payload;
         toast.info("History loaded!");
-    },
-    CHANGE_R: (state, payload) => {
-        state.r = payload
     }
 };
 const actions = {
@@ -28,6 +25,7 @@ const actions = {
         api()
             .get("/api/history")
             .then(res => {
+                // alert(JSON.stringify(res.data));
                 context.commit("SET_ENTRIES", res.data);
             })
             .catch(err => {
@@ -35,10 +33,18 @@ const actions = {
             });
     },
     POST_ENTRY: async (context, payload) => {
+        // alert(JSON.stringify(payload));
         api()
-            .post("/api/point", payload)
+            .post("/api/point", JSON.stringify(payload))
             .then(res => {
-                context.commit("ADD_ENTRY", res.data);
+                // alert(JSON.stringify(res.data));
+                let entry = {
+                    x: res.data.x,
+                    y: res.data.y,
+                    r: res.data.r,
+                    result: res.data.result
+                };
+                context.commit("ADD_ENTRY", entry);
             })
             .catch(err => {
                 toast.error(err.message);

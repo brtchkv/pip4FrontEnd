@@ -26,7 +26,7 @@
                             name="inputY"
                             required
                             placeholder="Enter Y"
-                            :state="stateY" trim
+                            :state="stateY"
                     ></b-form-input>
                 </b-form-group>
                 <b-col></b-col>
@@ -123,7 +123,6 @@
                     };
                     // alert(JSON.stringify(entry));
                     this.$emit("addentry", entry);
-                    evt.submit();
                 }
             },
             changeR() {

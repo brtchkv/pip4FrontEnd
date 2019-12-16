@@ -13,7 +13,9 @@ export default (includeAuth = true) => {
     if (includeAuth) {
         let currentUserString = window.localStorage.currentUser;
         let currentUser = currentUserString ? JSON.parse(currentUserString) : "";
-        request.headers.Authorization = currentUser && currentUser.token;
+        if (currentUser !== null) {
+            request.headers.Authorization = "Basic " + window.btoa(currentUser.username + ':' + currentUser.password);
+        }
     }
     return axios.create(request);
 };

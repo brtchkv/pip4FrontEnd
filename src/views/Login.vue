@@ -25,7 +25,7 @@
                         <b-form-input
                                 id="text-nickname"
                                 v-model="form.nickname"
-                                type="nickname"
+                                type="text"
                                 required
                                 placeholder="Enter nickname"
                         ></b-form-input>
@@ -44,8 +44,7 @@
                                 id="text-password"
                                 v-model="form.password"
                                 required
-                                placeholder="Enter password"
-                                trim>
+                                placeholder="Enter password">
                         </b-form-input>
                     </b-form-group>
                     <b-col></b-col>
@@ -82,7 +81,6 @@
                     username: this.form.nickname,
                     password: this.form.password
                 };
-
                 this.$store.dispatch("LOGIN", user);
 
             },
