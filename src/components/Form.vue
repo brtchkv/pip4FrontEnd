@@ -1,16 +1,16 @@
 <template>
-    <b-container fluid class="text-center" v-if="show" id="form">
-        <b-form-group id="controls" @submit="onSubmit">
+    <b-container fluid class="text-center justify-content-center" v-if="show" id="form">
+        <b-form id="controls" @submit="onSubmit" class="form">
             <b-form-group>
                 <p class="h5 text-center">X</p>
-                <b-form-radio-group class="inline text-center justify-content-center"
+                <b-form-radio-group class="inline text-center"
                                     v-model="selectedX"
                                     :options="optionsX"
                                     :state="stateX"
                                     name="radioX"
                                     required>
-                    <b-form-invalid-feedback :state="stateX">Please select one</b-form-invalid-feedback>
-                    <b-form-valid-feedback :state="stateX">Good</b-form-valid-feedback>
+                    <b-form-invalid-feedback :state="stateX"></b-form-invalid-feedback>
+                    <b-form-valid-feedback :state="stateX"></b-form-valid-feedback>
                 </b-form-radio-group>
             </b-form-group>
             <b-row class="text-center">
@@ -39,9 +39,10 @@
                                     :options="optionsR"
                                     :state="stateR"
                                     name="radioR"
-                                    required>
-                    <b-form-invalid-feedback :state="stateR">Please select one</b-form-invalid-feedback>
-                    <b-form-valid-feedback :state="stateR">Good</b-form-valid-feedback>
+                                    required
+                                    @change="changeR">
+                    <b-form-invalid-feedback :state="stateR"></b-form-invalid-feedback>
+                    <b-form-valid-feedback :state="stateR"></b-form-valid-feedback>
                 </b-form-radio-group>
             </b-form-group>
             <b-row class="text-center">
@@ -49,7 +50,7 @@
                     <b-button type="submit" variant="primary" size="sm">Submit</b-button>
                 </b-col>
             </b-row>
-        </b-form-group>
+        </b-form>
     </b-container>
 </template>
 
@@ -109,94 +110,46 @@
                 }
             },
             validFeedbackY() {
-                return this.state === true ? 'Good' : ''
+                return ''
             },
         },
         name: "Form",
         methods: {
             onSubmit(evt) {
                 evt.preventDefault();
-                let entry = {
-                    x: +this.selectedX,
-                    y: +this.selectedY.replace(",", "."),
-                    r: +this.selectedR
-                };
-                this.$emit("addentry", entry);
-            },
-            checkForm() {
-                let xFine = this.$refs.xVal.value != null;
-                let yFine = this.$refs.yVal.value !== "";
-                let rFine = this.$refs.rVal.value != null;
-                return xFine && yFine && rFine;
+                if (this.stateR && this.stateX && this.stateY) {
+                    let entry = {
+                        x: +this.selectedX,
+                        y: +this.selectedY.replace(",", "."),
+                        r: +this.selectedR
+                    };
+                    // alert(JSON.stringify(entry));
+                    this.$emit("addentry", entry);
+                    evt.submit();
+                }
             },
             changeR() {
-                let r = this.$refs.rVal;
-                if (r.value < 0) alert("stop, just stop");
-                let rad = r.value;
-                eventBus.$emit("radiusChanged", 20 * rad + "");
+                if (this.stateR) {
+                    eventBus.$emit("radiusChanged", 20 * this.selectedR + "");
+                }
             },
-            limitInput(field, min, max, length) {
-                field.onkeypress = e => {
-                    // Anything but numbers is blocked
-                    if (!("+-1234567890.,".indexOf(e.key) >= 0)) return false;
-                    // Blocked if too long
-                    if (field.value.length > length) return false;
-                    // Sign is blocked if length >= 1
-                    if (field.value.length >= 1 && "+-".indexOf(e.key) >= 0) return false;
-                    // Separator is blocked if exists
-                    if (
-                        (field.value.indexOf(",") >= 0 ||
-                            field.value.indexOf(".") >= 0 ||
-                            field.value == "" ||
-                            "+-".indexOf(field.value) >= 0) &&
-                        ".,".indexOf(e.key) >= 0
-                    ) {
-                        return false;
-                    }
-                    // Blocked if out of bounds
-                    if (
-                        +("" + field.value + e.key) >= max ||
-                        +("" + field.value + e.key) <= min
-                    )
-                        return false;
-                };
-            }
-        },
-        mounted() {
-            this.limitInput(this.$refs.yVal, -3, 5, 8);
         }
     };
 </script>
 
 <style scoped>
-    form {
+    #form {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .form {
         display: inline-flex;
         flex-direction: column;
         justify-content: space-evenly;
-        width: 250px;
-        height: 250px;
-    }
-
-    select,
-    input[type="text"] {
-        font-size: 1.6rem;
-    }
-
-    select {
-        text-align: center;
-        background: none;
-        border: none;
-    }
-
-    input[type="text"] {
-        text-align: center;
-    }
-
-    .submit-button {
-        color: white;
-        background-color: rgb(81, 197, 52);
-        height: 30px;
-        border-radius: 5px;
-        padding-top: 3px;
+        height: 100%;
+        margin: 0 auto;
+        padding-bottom: 10px;
     }
 </style>

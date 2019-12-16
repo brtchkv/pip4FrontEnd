@@ -11,9 +11,9 @@
                 </b-nav>
             </div>
         </b-row>
-        <div class="row around">
-            <CoordPlane id="coords" :entries="entries" @addentry="addEntry"
-                        style="padding-bottom: 15px; padding-top: 10px;"/>
+        <div class="row">
+            <CoordPlane id="coords" :entries="entries" @addentry="addEntry" class="justify-content-center"
+                        style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"/>
             <keep-alive>
                 <component :is="currentTab" :entries="entries" @addentry="addEntry"></component>
             </keep-alive>
@@ -70,4 +70,5 @@
 </script>
 
 <style lang="css">
+
 </style>
