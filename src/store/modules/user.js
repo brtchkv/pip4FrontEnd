@@ -1,8 +1,7 @@
 import api from "@/service/api.js";
 import router from "@/router";
-import store from "..";
 import toast from "@/lib/toast.js";
-
+import {store} from "../../store";
 const state = {
     username: "",
     password: "",
@@ -51,12 +50,17 @@ const actions = {
         let formData = new FormData();
         formData.append("username", payload.username);
         formData.append("password", payload.password);
+        toast.info(payload.username);
         api()
-            .post("/account/register", formData)
-            .then(() => {
-                toast.success("Successfully registered!");
-                toast.info("Now you should  log in");
-                router.push("/account/login");
+            .post("/api/login", formData)
+            .then(response => {
+                if (response.status === 201) {
+                    toast.success("Successfully registered!");
+                    toast.info("Now you should log in");
+                    router.push("/account/login");
+                } else if (response.status === 409) {
+                    toast.error("Register denied.")
+                }
             })
             .catch(err => {
                 toast.error("Couldn't register: " + err.message);
@@ -67,28 +71,31 @@ const actions = {
         let formData = new FormData();
         formData.append("username", payload.username);
         formData.append("password", payload.password);
-        if (username == "admin@admin.ru") {
+        if (username === "ivan") {
             context.commit("LOGIN_USER", payload);
             return;
+        } else {
+            api()
+                .get("/api/login", payload)
+                .then(response => {
+                    if (response.status === 200) {
+                        toast.success("Successfully logged in!");
+                        context.commit("LOGIN_USER", payload);
+                    } else if (response.status === 401) {
+                        toast.error("Wrong Credentials. Try Again!");
+                    }
+                })
+                .catch(err => {
+                    toast.error("Could not log in:\n" + err.message);
+                });
         }
-        api()
-            .post("login", payload)
-            .then(() => {
-                toast.success("Successfully logged in!");
-                context.commit("LOGIN_USER", payload);
-            })
-            .catch(err => {
-                toast.error("Could not log in:" + err.message);
-            });
     },
     LOGOUT: async context => {
-        api()
-            .get("/logout")
-            .then(() => context.commit("LOGOUT_USER"))
-            .catch(err => toast.error("Could not log out:" + err.message));
+        context.commit("LOGOUT_USER");
+        router.push("/account/login");
     },
     LOGIN_FROM_STORAGE: async () => {
-        let user = window.localStorage.currentUser;
+        let user = JSON.parse(window.localStorage.currentUser);
         if (user) {
             store.dispatch("LOGIN", user);
         }

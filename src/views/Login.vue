@@ -37,13 +37,15 @@
                     <b-form-group @submit.stop.prevent
                                   id="input-group-2"
                                   label="Password:"
-                                  label-for="text-password">
+                                  label-for="text-password"
+                    >
                         <b-form-input
                                 type="password"
                                 id="text-password"
                                 v-model="form.password"
                                 required
-                                placeholder="Enter password">
+                                placeholder="Enter password"
+                                trim>
                         </b-form-input>
                     </b-form-group>
                     <b-col></b-col>
@@ -76,12 +78,13 @@
         methods: {
             onSubmit(evt) {
                 evt.preventDefault();
-                alert(JSON.stringify(this.form));
                 let user = {
-                    username: this.username,
-                    password: this.password
+                    username: this.form.nickname,
+                    password: this.form.password
                 };
-                this.$store.dispatch(this.operation, user);
+                if (this.form.nickname.length >= 4 && this.form.password.length >= 4) {
+                    this.$store.dispatch("LOGIN", user);
+                }
             },
             onReset(evt) {
                 evt.preventDefault();
@@ -93,11 +96,6 @@
                 this.$nextTick(() => {
                     this.show = true
                 })
-            },
-            computed: {
-                operation() {
-                    return "LOGIN";
-                }
             }
         }
     }

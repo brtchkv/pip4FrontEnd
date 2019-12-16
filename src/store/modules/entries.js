@@ -20,17 +20,17 @@ const mutations = {
 const actions = {
     GET_ENTRIES: async context => {
         api()
-            .get("/getEntries")
+            .get("/api/history")
             .then(res => {
                 context.commit("SET_ENTRIES", res.data);
             })
             .catch(err => {
-                toast.error("Could not load history because: " + err.message);
+                toast.error("Could not load history: " + err.message);
             });
     },
     POST_ENTRY: async (context, payload) => {
         api()
-            .post("/addEntry", payload)
+            .post("/api/point", payload)
             .then(res => {
                 context.commit("ADD_ENTRY", res.data);
             })

@@ -23,16 +23,10 @@
             }
         },
         computed: {
-            username() {
-                return store.getters.USERNAME;
-            },
             isAuthenticated() {
                 return store.getters.IS_AUTHENTICATED;
             }
         },
-        mounted() {
-            () => alert(store.backend);
-        }
     };
 </script>
 

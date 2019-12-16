@@ -1,56 +1,127 @@
 <template>
-    <form id="controls" @submit.prevent="submit">
-        <select name="x" ref="xVal" id="x-value">
-            <option value="-3">-3</option>
-            <option value="-2">-2</option>
-            <option value="-1">-1</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <input
-                ref="yVal"
-                type="text"
-                name="y"
-                id="y-value"
-                placeholder="(-3 ; +5)"
-                required="required"
-        />
-        <select name="r" ref="rVal" id="r-value" @change.prevent="changeR">
-            <option value="-3" disabled="true">-3</option>
-            <option value="-2" disabled="true">-2</option>
-            <option value="-1" disabled="true">-1</option>
-            <option value="0" selected>0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <button type="submit" class="icon-button submit-button">
-            <ion-icon name="checkmark"/>
-        </button>
-    </form>
+    <b-container fluid class="text-center" v-if="show" id="form">
+        <b-form-group id="controls" @submit="onSubmit">
+            <b-form-group>
+                <p class="h5 text-center">X</p>
+                <b-form-radio-group class="inline text-center justify-content-center"
+                                    v-model="selectedX"
+                                    :options="optionsX"
+                                    :state="stateX"
+                                    name="radioX"
+                                    required>
+                    <b-form-invalid-feedback :state="stateX">Please select one</b-form-invalid-feedback>
+                    <b-form-valid-feedback :state="stateX">Good</b-form-valid-feedback>
+                </b-form-radio-group>
+            </b-form-group>
+            <b-row class="text-center">
+                <b-col></b-col>
+
+                <b-form-group :invalid-feedback="invalidFeedbackY"
+                              :valid-feedback="validFeedbackY"
+                              :state="stateY">
+                    <b-form-input
+                            id="y-value"
+                            v-model="selectedY"
+                            type="number"
+                            name="inputY"
+                            required
+                            placeholder="Enter Y"
+                            :state="stateY" trim
+                    ></b-form-input>
+                </b-form-group>
+                <b-col></b-col>
+            </b-row>
+
+            <b-form-group>
+                <p class="h5 text-center">R</p>
+                <b-form-radio-group class="text-center justify-content-center"
+                                    v-model="selectedR"
+                                    :options="optionsR"
+                                    :state="stateR"
+                                    name="radioR"
+                                    required>
+                    <b-form-invalid-feedback :state="stateR">Please select one</b-form-invalid-feedback>
+                    <b-form-valid-feedback :state="stateR">Good</b-form-valid-feedback>
+                </b-form-radio-group>
+            </b-form-group>
+            <b-row class="text-center">
+                <b-col>
+                    <b-button type="submit" variant="primary" size="sm">Submit</b-button>
+                </b-col>
+            </b-row>
+        </b-form-group>
+    </b-container>
 </template>
 
 <script>
     import {eventBus} from "../main";
 
     export default {
+        data() {
+            return {
+                selectedX: null,
+                selectedR: null,
+                selectedY: null,
+                optionsX: [
+                    {text: '-3', value: '-3'},
+                    {text: '-2', value: '-2'},
+                    {text: '-1', value: '-1'},
+                    {text: '0', value: '0'},
+                    {text: '1', value: '1'},
+                    {text: '2', value: '2'},
+                    {text: '3', value: '3'},
+                    {text: '4', value: '4'},
+                    {text: '5', value: '5'}
+                ],
+                optionsR: [
+                    {text: '-3', value: '-3'},
+                    {text: '-2', value: '-2'},
+                    {text: '-1', value: '-1'},
+                    {text: '0', value: '0'},
+                    {text: '1', value: '1'},
+                    {text: '2', value: '2'},
+                    {text: '3', value: '3'},
+                    {text: '4', value: '4'},
+                    {text: '5', value: '5'}
+                ],
+                show: true
+            }
+        },
+        computed: {
+            stateX() {
+                return Boolean(this.selectedX);
+            },
+            stateR() {
+                return Boolean(this.selectedR);
+            },
+
+            stateY() {
+                return Boolean(this.selectedY) && +this.selectedY >= -3 && +this.selectedY <= 5;
+            },
+
+            invalidFeedbackY() {
+                if (this.selectedY === null) {
+                    return ''
+                } else if (Boolean(this.selectedY) && (+this.selectedY < -3 || +this.selectedY > 5)) {
+                    return 'Enter number in range of -3..5'
+                } else {
+                    return 'Please enter something'
+                }
+            },
+            validFeedbackY() {
+                return this.state === true ? 'Good' : ''
+            },
+        },
         name: "Form",
         methods: {
-            submit() {
-                if (this.checkForm()) {
-                    let entry = {
-                        x: +this.$refs.xVal.value,
-                        y: +this.$refs.yVal.value.replace(",", "."),
-                        r: +this.$refs.rVal.value
-                    };
-                    this.$emit("addentry", entry);
-                }
+            onSubmit(evt) {
+                evt.preventDefault();
+                let entry = {
+                    x: +this.selectedX,
+                    y: +this.selectedY.replace(",", "."),
+                    r: +this.selectedR
+                };
+                this.$emit("addentry", entry);
             },
             checkForm() {
                 let xFine = this.$refs.xVal.value != null;

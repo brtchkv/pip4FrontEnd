@@ -21,13 +21,17 @@
                     <b-form-group
                             id="input-group-1"
                             label="Nickname:"
-                            label-for="text-nickname">
+                            label-for="text-nickname"
+                            :invalid-feedback="invalidFeedbackN"
+                            :valid-feedback="validFeedbackN"
+                            :state="stateN">
                         <b-form-input
                                 id="text-nickname"
                                 v-model="form.nickname"
                                 type="nickname"
                                 required
                                 placeholder="Enter nickname"
+                                :state="stateN" trim
                         ></b-form-input>
                     </b-form-group>
                     <b-col></b-col>
@@ -37,13 +41,17 @@
                     <b-form-group @submit.stop.prevent
                                   id="input-group-2"
                                   label="Password:"
-                                  label-for="text-password">
+                                  label-for="text-password"
+                                  :invalid-feedback="invalidFeedback"
+                                  :valid-feedback="validFeedback"
+                                  :state="state">
                         <b-form-input
                                 type="password"
                                 id="text-password"
                                 v-model="form.password"
                                 required
-                                placeholder="Enter password">
+                                placeholder="Enter password"
+                                :state="state" trim>
                         </b-form-input>
                     </b-form-group>
                     <b-col></b-col>
@@ -73,15 +81,49 @@
                 show: true
             }
         },
+        computed: {
+            state() {
+                return this.form.password.length >= 4
+            },
+            invalidFeedback() {
+                if (this.form.password.length > 4) {
+                    return ''
+                } else if (this.form.password.length > 0) {
+                    return 'Enter at least 4 characters'
+                } else {
+                    return 'Please enter something'
+                }
+            },
+            validFeedback() {
+                return this.state === true ? 'Thank you' : ''
+            },
+
+            stateN() {
+                return this.form.nickname.length >= 4
+            },
+            invalidFeedbackN() {
+                if (this.form.nickname.length > 4) {
+                    return ''
+                } else if (this.form.nickname.length > 0) {
+                    return 'Enter at least 4 characters'
+                } else {
+                    return 'Please enter something'
+                }
+            },
+            validFeedbackN() {
+                return this.state === true ? 'Thank you' : ''
+            }
+        },
         methods: {
             onSubmit(evt) {
                 evt.preventDefault();
-                alert(JSON.stringify(this.form));
                 let user = {
-                    username: this.username,
-                    password: this.password
+                    username: this.form.nickname,
+                    password: this.form.password
                 };
-                this.$store.dispatch(this.operation, user);
+                if (this.form.nickname.length >= 4 && this.form.password.length >= 4) {
+                    this.$store.dispatch("REGISTER", user);
+                }
             },
             onReset(evt) {
                 evt.preventDefault();
@@ -94,10 +136,12 @@
                     this.show = true
                 })
             },
-            computed: {
-                operation() {
-                    return "REGISTER";
-                }
+            submit() {
+                let user = {
+                    username: this.username,
+                    password: this.password
+                };
+                this.$store.dispatch("REGISTER", user);
             }
         }
     }
