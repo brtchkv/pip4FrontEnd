@@ -31,15 +31,15 @@
                 <b-navbar-nav class="ml-auto">
                     <b-navbar-nav center>
                         <b-nav-item @click="showHistory = !showHistory"
-                                    :class="[{ active: showHistory}]">Table
+                                    :class="[{ active: showHistory}]"><span class="text-primary">Table</span>
                         </b-nav-item>
                     </b-navbar-nav>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
-                <b-navbar-nav class="ml-auto" style="color: red;">
+                <b-navbar-nav class="ml-auto">
                     <b-navbar-nav right>
-                        <b-nav-item @click="logout" style="color: red;"><span class="text-danger">Exit</span>
+                        <b-nav-item @click="logout"><span class="text-danger">Exit</span>
                         </b-nav-item>
                     </b-navbar-nav>
                 </b-navbar-nav>
