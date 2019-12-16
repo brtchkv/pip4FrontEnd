@@ -1,7 +1,10 @@
 import api from "@/service/api.js";
 import toast from "@/lib/toast.js";
 
-const state = {entries: []};
+const state = {
+    entries: [],
+    r: 1
+};
 const getters = {
     ENTRIES: state => {
         return state.entries;
@@ -15,6 +18,9 @@ const mutations = {
     SET_ENTRIES: (state, payload) => {
         state.entries = payload;
         toast.info("History loaded!");
+    },
+    CHANGE_R: (state, payload) => {
+        state.r = payload
     }
 };
 const actions = {

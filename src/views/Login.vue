@@ -82,9 +82,9 @@
                     username: this.form.nickname,
                     password: this.form.password
                 };
-                if (this.form.nickname.length >= 4 && this.form.password.length >= 4) {
-                    this.$store.dispatch("LOGIN", user);
-                }
+
+                this.$store.dispatch("LOGIN", user);
+
             },
             onReset(evt) {
                 evt.preventDefault();

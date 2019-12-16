@@ -40,7 +40,8 @@
                                     :state="stateR"
                                     name="radioR"
                                     required
-                                    @change="changeR">
+                                    @change.native="changeR"
+                >
                     <b-form-invalid-feedback :state="stateR"></b-form-invalid-feedback>
                     <b-form-valid-feedback :state="stateR"></b-form-valid-feedback>
                 </b-form-radio-group>
@@ -61,7 +62,7 @@
         data() {
             return {
                 selectedX: null,
-                selectedR: null,
+                selectedR: 0,
                 selectedY: null,
                 optionsX: [
                     {text: '-3', value: '-3'},
@@ -75,9 +76,6 @@
                     {text: '5', value: '5'}
                 ],
                 optionsR: [
-                    {text: '-3', value: '-3'},
-                    {text: '-2', value: '-2'},
-                    {text: '-1', value: '-1'},
                     {text: '0', value: '0'},
                     {text: '1', value: '1'},
                     {text: '2', value: '2'},
@@ -129,9 +127,7 @@
                 }
             },
             changeR() {
-                if (this.stateR) {
-                    eventBus.$emit("radiusChanged", 20 * this.selectedR + "");
-                }
+                eventBus.$emit("radiusChanged", 20 * this.selectedR);
             },
         }
     };

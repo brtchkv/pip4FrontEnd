@@ -91,11 +91,11 @@
                 } else if (this.form.password.length > 0) {
                     return 'Enter at least 4 characters'
                 } else {
-                    return 'Please enter something'
+                    return ''
                 }
             },
             validFeedback() {
-                return this.state === true ? 'Thank you' : ''
+                return ''
             },
 
             stateN() {
@@ -107,11 +107,11 @@
                 } else if (this.form.nickname.length > 0) {
                     return 'Enter at least 4 characters'
                 } else {
-                    return 'Please enter something'
+                    return ''
                 }
             },
             validFeedbackN() {
-                return this.state === true ? 'Thank you' : ''
+                return ''
             }
         },
         methods: {

@@ -82,7 +82,7 @@
         },
         data() {
             return {
-                radius: 0
+                radius: 1
             };
         },
         components: {dot: Dot},

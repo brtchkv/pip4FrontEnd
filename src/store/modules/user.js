@@ -47,12 +47,9 @@ const mutations = {
 };
 const actions = {
     REGISTER: async (context, payload) => {
-        let formData = new FormData();
-        formData.append("username", payload.username);
-        formData.append("password", payload.password);
         toast.info(payload.username);
         api()
-            .post("/api/login", formData)
+            .post("/api/register", JSON.stringify(payload))
             .then(response => {
                 if (response.status === 201) {
                     toast.success("Successfully registered!");
@@ -67,28 +64,22 @@ const actions = {
             });
     },
     LOGIN: async (context, payload) => {
-        let {username} = payload;
-        let formData = new FormData();
-        formData.append("username", payload.username);
-        formData.append("password", payload.password);
-        if (username === "ivan") {
-            context.commit("LOGIN_USER", payload);
-            return;
-        } else {
+        let {username, password} = payload;
             api()
-                .get("/api/login", payload)
+                .get("/api/login", {
+                    headers: {
+                        'Authorization': 'Basic ' + window.btoa(username + ':' + password)
+                    }
+                })
                 .then(response => {
                     if (response.status === 200) {
                         toast.success("Successfully logged in!");
                         context.commit("LOGIN_USER", payload);
-                    } else if (response.status === 401) {
-                        toast.error("Wrong Credentials. Try Again!");
                     }
                 })
-                .catch(err => {
-                    toast.error("Could not log in:\n" + err.message);
+                .catch(() => {
+                    toast.error("Wrong Credentials. Try Again!");
                 });
-        }
     },
     LOGOUT: async context => {
         context.commit("LOGOUT_USER");

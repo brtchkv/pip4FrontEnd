@@ -12,10 +12,15 @@
             </div>
         </b-row>
         <div class="row">
-            <CoordPlane id="coords" :entries="entries" @addentry="addEntry" class="justify-content-center"
-                        style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"/>
+            <!--            <CoordPlane id="coords" :entries="entries" @addentry="addEntry" class="justify-content-center"-->
+            <!--                        style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"/>-->
             <keep-alive>
-                <component :is="currentTab" :entries="entries" @addentry="addEntry"></component>
+                <component :is="currentTabPlane" :entries="entries" @addentry="addEntry" class="justify-content-center"
+                           style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"></component>
+            </keep-alive>
+            <keep-alive>
+                <component :is="currentTab" :entries="entries" @addentry="addEntry"
+                           class="text-center justify-content-center"></component>
             </keep-alive>
         </div>
     </div>
@@ -23,6 +28,7 @@
 
 <script>
     import {store} from "../store";
+
     import CoordPlane from "../components/CoordPlane.vue";
     import Form from "../components/Form.vue";
     import Table from "../components/Table.vue";
@@ -36,6 +42,9 @@
             };
         },
         computed: {
+            currentTabPlane() {
+                return this.showHistory ? "" : "CoordPlane";
+            },
             currentTab() {
                 return this.showHistory ? "Table" : "Form";
             },
