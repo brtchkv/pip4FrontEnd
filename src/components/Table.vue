@@ -1,13 +1,12 @@
 <template>
-    <b-container fluid class="text-center justify-content-center" style="padding-bottom: 15px">
+    <b-container fluid class="col" style="padding-bottom: 15px">
         <b-table
                 :sticky-header="true"
-                :no-border-collapse="false"
                 responsive
                 :items="entries"
                 :fields="fields"
                 style="margin: auto;"
-                class="text-center justify-content-center col-md-10"
+                class="col text-center justify-content-center col-md"
         >
         </b-table>
     </b-container>

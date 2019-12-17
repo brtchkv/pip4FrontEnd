@@ -1,24 +1,5 @@
 <template>
     <div class="main">
-        <!--        <b-row class="row">-->
-        <!--            <div>-->
-        <!--                <b-navbar small>-->
-        <!--                    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>-->
-        <!--                    <b-collapse id="nav-collapse" is-nav>-->
-        <!--                    <b-navbar-nav>-->
-        <!--                    <b-nav-item disabled>{{$store.getters.USERNAME}}</b-nav-item>-->
-        <!--                    <b-nav-item @click="showHistory = !showHistory"-->
-        <!--                                :class="[{ active: showHistory}]"-->
-        <!--                    >History-->
-        <!--                    </b-nav-item>-->
-        <!--                        </b-navbar-nav>-->
-        <!--                    <b-navbar-nav>-->
-        <!--                    <b-nav-item @click="logout" class="navbar-right" right>Log Out</b-nav-item>-->
-        <!--                        </b-navbar-nav>-->
-        <!--                    </b-collapse>-->
-        <!--                </b-navbar>-->
-        <!--            </div>-->
-        <!--        </b-row>-->
         <b-navbar class="text-center justify-content-center">
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -46,17 +27,20 @@
             </b-collapse>
         </b-navbar>
         <div class="row">
-            <!--            <CoordPlane id="coords" :entries="entries" @addentry="addEntry" class="justify-content-center"-->
-            <!--                        style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"/>-->
             <keep-alive>
-                <component :is="currentTabPlane" :entries="entries" @addentry="addEntry" class="justify-content-center"
+                <component :is="currentTabPlane" :entries="entries" @addentry="addEntry"
+                           class="row justify-content-center"
                            style="padding-bottom: 15px; padding-top: 10px; margin: 0 auto;"></component>
             </keep-alive>
             <keep-alive>
-                <component :is="currentTab" :entries="entries" @addentry="addEntry"
+                <component :is="currentTabForm" :entries="entries" @addentry="addEntry"
                            class="text-center justify-content-center"></component>
             </keep-alive>
         </div>
+        <keep-alive>
+            <component :is="currentTabTable" :entries="entries" @addentry="addEntry"
+                       class="text-center justify-content-center"></component>
+        </keep-alive>
     </div>
 </template>
 
@@ -79,8 +63,11 @@
             currentTabPlane() {
                 return this.showHistory ? "" : "CoordPlane";
             },
-            currentTab() {
-                return this.showHistory ? "Table" : "Form";
+            currentTabTable() {
+                return this.showHistory ? "Table" : "";
+            },
+            currentTabForm() {
+                return this.showHistory ? "" : "Form";
             },
             entries() {
                 return this.$store.getters.ENTRIES;

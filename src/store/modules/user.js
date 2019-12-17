@@ -86,9 +86,11 @@ const actions = {
         router.push("/account/login");
     },
     LOGIN_FROM_STORAGE: async () => {
-        let user = JSON.parse(window.localStorage.currentUser);
-        if (user) {
-            store.dispatch("LOGIN", user);
+        if (localStorage.getItem("currentUser") !== null) {
+            let user = JSON.parse(window.localStorage.currentUser);
+            if (user) {
+                store.dispatch("LOGIN", user);
+            }
         }
     }
 };

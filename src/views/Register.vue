@@ -1,43 +1,60 @@
 <template>
-    <b-container class="login">
-        <b-row class="row justify-content-center">
-            <div>
-                <b-nav small>
-                    <b-nav-item to="/account/login">Sign In</b-nav-item>
-                    <b-nav-item disabled>Register</b-nav-item>
-                    <b-nav-item to="/about">About</b-nav-item>
-                </b-nav>
-            </div>
+    <b-container fluid class="text-center justify-content-center">
+        <b-row class="col justify-content-center">
+            <b-navbar class="text-center justify-content-center">
+
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+                <b-collapse id="nav-collapse" is-nav>
+                    <b-navbar-nav>
+                        <b-nav-item to="/account/login"><span class="text-primary">Sign In</span></b-nav-item>
+                    </b-navbar-nav>
+
+                    <b-navbar-nav class="ml-auto">
+                        <b-navbar-nav center>
+                            <b-nav-item to="/account/register" disabled>Register
+                            </b-nav-item>
+                        </b-navbar-nav>
+                    </b-navbar-nav>
+
+                    <!-- Right aligned nav items -->
+                    <b-navbar-nav class="ml-auto">
+                        <b-navbar-nav right>
+                            <b-nav-item to="/about"><span class="text-primary">About</span>
+                            </b-nav-item>
+                        </b-navbar-nav>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
         </b-row>
-        <b-row class="text-center row justify-content-center">
-            <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+        <b-row class="text-center justify-content-center">
+            <b-form @submit="onSubmit" @reset="onReset" v-if="show" autocomplete="off">
                 <b-row class="text-center">
                     <b-col>
                         <p class="h4 text-center">Register</p>
                     </b-col>
                 </b-row>
-                <b-row class="text-center">
-                    <b-col></b-col>
+                <b-row class="col text-center justify-content-center">
                     <b-form-group
                             id="input-group-1"
                             label="Nickname:"
                             label-for="text-nickname"
                             :invalid-feedback="invalidFeedbackN"
                             :valid-feedback="validFeedbackN"
-                            :state="stateN">
+                            :state="stateN"
+                            autocomplete="off">
                         <b-form-input
                                 id="text-nickname"
                                 v-model="form.nickname"
                                 type="nickname"
+                                autocomplete="off"
                                 required
                                 placeholder="Enter nickname"
                                 :state="stateN" trim
                         ></b-form-input>
                     </b-form-group>
-                    <b-col></b-col>
                 </b-row>
-                <b-row class="text-center">
-                    <b-col></b-col>
+                <b-row class="col text-center justify-content-center">
                     <b-form-group @submit.stop.prevent
                                   id="input-group-2"
                                   label="Password:"
@@ -54,13 +71,11 @@
                                 :state="state" trim>
                         </b-form-input>
                     </b-form-group>
-                    <b-col></b-col>
                 </b-row>
                 <b-row class="text-center">
                     <b-col>
                         <b-button type="submit" variant="primary" size="sm">Submit</b-button>
                     </b-col>
-                    <b-col></b-col>
                     <b-col>
                         <b-button type="reset" variant="danger" size="sm">Reset</b-button>
                     </b-col>
@@ -148,9 +163,4 @@
 </script>
 
 <style scoped>
-    .login {
-        height: 100%;
-        margin: 0 auto;
-        padding-bottom: 10px;
-    }
 </style>
