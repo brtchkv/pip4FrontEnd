@@ -25,7 +25,6 @@ const mutations = {
         state.password = password;
         window.localStorage.currentUser = JSON.stringify({
             username,
-            password,
             token
         });
         state.isAuthenticated = true;
@@ -64,11 +63,11 @@ const actions = {
             });
     },
     LOGIN: async (context, payload) => {
-        let {username, password} = payload;
+        let {token} = payload;
             api()
                 .get("/api/login", {
                     headers: {
-                        'Authorization': 'Basic ' + window.btoa(username + ':' + password)
+                        'Authorization': 'Basic ' + token
                     }
                 })
                 .then(response => {

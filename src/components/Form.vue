@@ -62,7 +62,7 @@
         data() {
             return {
                 selectedX: null,
-                selectedR: 0,
+                selectedR: null,
                 selectedY: null,
                 optionsX: [
                     {text: '-3', value: '-3'},
@@ -76,7 +76,6 @@
                     {text: '5', value: '5'}
                 ],
                 optionsR: [
-                    {text: '0', value: '0'},
                     {text: '1', value: '1'},
                     {text: '2', value: '2'},
                     {text: '3', value: '3'},
@@ -104,7 +103,7 @@
                 } else if (Boolean(this.selectedY) && (+this.selectedY < -3 || +this.selectedY > 5)) {
                     return 'Enter number in range of -3..5'
                 } else {
-                    return 'Please enter something'
+                    return 'Please enter a number'
                 }
             },
             validFeedbackY() {

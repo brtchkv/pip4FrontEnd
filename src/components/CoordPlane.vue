@@ -74,6 +74,7 @@
 <script>
     import {eventBus} from "../main";
     import Dot from "./Dot.vue";
+    import toast from "@/lib/toast.js";
 
     export default {
         name: "CoordPlane",
@@ -82,7 +83,7 @@
         },
         data() {
             return {
-                radius: 1
+                radius: 0
             };
         },
         components: {dot: Dot},
@@ -93,21 +94,25 @@
         },
         methods: {
             graphClick(click) {
-                let plane = this.$refs.plane;
-                let width = 250;
-                let height = 250;
-                let coordX = click.pageX - plane.getBoundingClientRect().left;
-                let coordY = click.pageY - plane.getBoundingClientRect().top;
-                let relX = coordX - width / 2;
-                let relY = coordY - height / 2;
-                relY = -relY;
-                let x = (relX / 125) * 6.25;
-                let y = (relY / 125) * 6.25;
-                x = +(x + "").substring(0, 5);
-                y = +(y + "").substring(0, 5);
-                let entry = {x, y};
-                entry.r = this.radius / 20;
-                this.$emit("addentry", entry);
+                if (this.radius > 0) {
+                    let plane = this.$refs.plane;
+                    let width = 250;
+                    let height = 250;
+                    let coordX = click.pageX - plane.getBoundingClientRect().left;
+                    let coordY = click.pageY - plane.getBoundingClientRect().top;
+                    let relX = coordX - width / 2;
+                    let relY = coordY - height / 2;
+                    relY = -relY;
+                    let x = (relX / 125) * 6.25;
+                    let y = (relY / 125) * 6.25;
+                    x = +(x + "").substring(0, 5);
+                    y = +(y + "").substring(0, 5);
+                    let entry = {x, y};
+                    entry.r = this.radius / 20;
+                    this.$emit("addentry", entry);
+                } else {
+                    toast.error("Choose radius!");
+                }
             }
         },
         mounted() {

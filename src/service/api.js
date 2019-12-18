@@ -15,7 +15,7 @@ export default (includeAuth = true) => {
         if (localStorage.getItem("currentUser") !== null) {
             let currentUser = currentUserString ? JSON.parse(currentUserString) : "";
             if (currentUser !== null) {
-                request.headers.Authorization = "Basic " + window.btoa(currentUser.username + ':' + currentUser.password);
+                request.headers.Authorization = "Basic " + currentUser.token;
             }
         }
     }
